@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -15,20 +12,47 @@ permissions:
 
 jobs:
   build:
+    name: Build my project Unity ✨
     runs-on: ubuntu-latest
-
     steps:
+      # Checkout
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          lfs: true
 
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build
       - name: Build project
         uses: game-ci/unity-builder@v4
         env:
-         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-         targetPlatform: WebGL
+          targetPlatform: WebGL
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build
 
       - name: Push to build
         uses: s0/git-publish-subdir-action@develop
