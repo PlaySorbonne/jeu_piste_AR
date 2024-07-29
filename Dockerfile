@@ -1,3 +1,2 @@
-FROM nginx:alpine
-COPY /DockerFiles/default.conf /etc/nginx/conf.d/default.conf
-COPY /Build /var/share/nginx/html
+FROM nginx
+COPY /Build /usr/share/nginx/html
