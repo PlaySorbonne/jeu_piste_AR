@@ -18,8 +18,6 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
         foreach (var elementList in contentElements)
             foreach (var element in elementList)
                 element.Hide(fadeDuration);
-
-            
     }
 
     #endregion
