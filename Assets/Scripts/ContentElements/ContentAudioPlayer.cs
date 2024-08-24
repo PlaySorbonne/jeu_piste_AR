@@ -78,25 +78,10 @@ public class ContentAudioPlayer : MonoBehaviour, IContentElement
 
     public void Hide(float fadeOutDuration)
     {
-        try
-        {
-            playBtn.Hide(fadeOutDuration);
-        } catch(Exception e)
-        {
-           
-        }
-
-        try
-        {
-            pauseBtn.Hide(fadeOutDuration);
-        }
-        catch (Exception e)
-        {
-            
-        }
-
-        PauseAudio();
+        if (isPlaying) HandlePauseButton();
+        else PauseAudio();
         audioSource.time = 0;
+        playBtn.Hide(fadeOutDuration);
         audioSlider.Hide(fadeOutDuration);
         playbackTime.Hide(fadeOutDuration);
         playbackTimeMax.Hide(fadeOutDuration);

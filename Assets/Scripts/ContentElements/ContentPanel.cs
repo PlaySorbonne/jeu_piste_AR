@@ -9,7 +9,7 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
     [SerializeField] public List<List<IContentElement>> contentElements;
     [SerializeField] private float intervalTime;
     [SerializeField] private float fadeDuration;
-
+    private bool isDisplayed = false; 
 
     #region Unity's methods
 
@@ -25,11 +25,19 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
     public void Display(float fadeInDuration)
     {
         StartCoroutine(DisplayContent(fadeInDuration));
+        isDisplayed = true;
     }
 
     public void Display()
     {
         StartCoroutine(DisplayContent(fadeDuration));
+        isDisplayed = true; 
+    }
+
+    public void MarkerButton()
+    {
+        if (isDisplayed) Hide();
+        else Display(); 
     }
 
     public IEnumerator DisplayContent(float fadeInDuration)
@@ -38,8 +46,6 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
         {
             foreach (var element in elementList)
                 element.Display(fadeInDuration);
-
-            Debug.Log("finished this one");
 
             yield return new WaitForSeconds(intervalTime);
         }
@@ -51,6 +57,8 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
         foreach (var elementList in contentElements)
             foreach (var element in elementList)
                 element.Hide(fadeOutDuration);
+
+        isDisplayed = false; 
     }
 
     public void Hide()
@@ -58,6 +66,8 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
         foreach (var elementList in contentElements)
             foreach (var element in elementList)
                 element.Hide(fadeDuration);
+
+        isDisplayed = false;
     }
 }
 
