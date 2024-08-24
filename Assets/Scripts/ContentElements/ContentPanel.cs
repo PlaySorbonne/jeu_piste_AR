@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 public class ContentPanel : SerializedMonoBehaviour, IContentElement
-{
+{   
     [SerializeField] public List<List<IContentElement>> contentElements;
     [SerializeField] private float intervalTime;
     [SerializeField] private float fadeDuration;
