@@ -5,9 +5,10 @@ using UnityEngine.Events;
 
 public class ButtonPatternRecognizer : MonoBehaviour
 {
-    [SerializeField] private string pattern ="1122";
-    [SerializeField] private UnityEvent OnHalfSequence; 
-    [SerializeField] private UnityEvent OnSequenceComplete; 
+    //[SerializeField] private ContentImage blackFilter;
+    [SerializeField] private string pattern ="123";
+    [SerializeField] private UnityEvent OnSequenceComplete;
+    [SerializeField] private string validateQuestURL = "https://c.tenor.com/2_xeX2jkM0oAAAAd/tenor.gif";
 
     private int patternLength;
     private int patternPtr = 0;
@@ -15,6 +16,7 @@ public class ButtonPatternRecognizer : MonoBehaviour
     private void Start()
     {
         patternLength = pattern.Length;
+        //blackFilter.Hide(0);
     }
 
     public void OnButtonClick(int btnId)
@@ -29,11 +31,6 @@ public class ButtonPatternRecognizer : MonoBehaviour
         //Correct sequence btn
         patternPtr++;
 
-        if (patternPtr >= patternLength / 2)
-        {
-            //Half sequence indice
-            OnHalfSequence.Invoke(); 
-        }
 
         if (patternPtr >= patternLength)
         {
@@ -41,5 +38,10 @@ public class ButtonPatternRecognizer : MonoBehaviour
             OnSequenceComplete.Invoke(); 
         }
         
+    }
+
+    public void OnValidateQuest()
+    {
+        Application.OpenURL(validateQuestURL);
     }
 }
