@@ -17,19 +17,21 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
     {
         foreach (var elementList in contentElements)
             foreach (var element in elementList)
-                element.Hide(fadeDuration);
+                element.Hide(0);
     }
 
     #endregion
 
     public void Display(float fadeInDuration)
     {
+        gameObject.SetActive(true); 
         StartCoroutine(DisplayContent(fadeInDuration));
         isDisplayed = true;
     }
 
     public void Display()
     {
+        gameObject.SetActive(true);
         StartCoroutine(DisplayContent(fadeDuration));
         isDisplayed = true; 
     }
@@ -58,7 +60,8 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
             foreach (var element in elementList)
                 element.Hide(fadeOutDuration);
 
-        isDisplayed = false; 
+        isDisplayed = false;
+        StartCoroutine(DisableGameObject(fadeDuration));
     }
 
     public void Hide()
@@ -68,6 +71,13 @@ public class ContentPanel : SerializedMonoBehaviour, IContentElement
                 element.Hide(fadeDuration);
 
         isDisplayed = false;
+        StartCoroutine(DisableGameObject(fadeDuration));
+    }
+
+    private IEnumerator DisableGameObject(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        this.gameObject.SetActive(false); 
     }
 }
 
